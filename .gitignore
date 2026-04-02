@@ -1,0 +1,51 @@
+# ========================
+# Power BI
+# ========================
+*.pbix.bak
+*.pbit.bak
+.pbi/
+LocalSettings.json
+
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ========================
+# Jupyter Notebooks
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# Excel temp files
+# ========================
+~$*.xlsx
+~$*.xlsm
+~$*.xls
+
+# ========================
+# OS junk
+# ========================
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ========================
+# VS Code
+# ========================
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+# ========================
+# pbi-tools
+# ========================
+tools/
