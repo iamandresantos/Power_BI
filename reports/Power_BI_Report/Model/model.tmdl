@@ -8,5 +8,12 @@
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
+annotation PBI_QueryOrder = ["sp500_companies","stock_historical_prices"]
+
+ref table sp500_companies
+ref table stock_historical_prices
+ref table DateTableTemplate_ebbeafcf-55e8-4a98-92ee-dba9a86af9c7
+ref table LocalDateTable_e711c53e-5a46-4190-aec3-446bd8950a3c
+
 ref cultureInfo en-US
 

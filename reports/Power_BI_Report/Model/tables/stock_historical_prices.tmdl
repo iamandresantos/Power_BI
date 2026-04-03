@@ -1,0 +1,78 @@
+﻿table stock_historical_prices
+
+	column ticker
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ticker
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 17e8ac4f-1081-4556-95e3-d4fd362e8088
+			defaultHierarchy: LocalDateTable_e711c53e-5a46-4190-aec3-446bd8950a3c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column open
+		dataType: double
+		summarizeBy: sum
+		sourceColumn: open
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column high
+		dataType: double
+		summarizeBy: sum
+		sourceColumn: high
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column low
+		dataType: double
+		summarizeBy: sum
+		sourceColumn: low
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column close
+		dataType: double
+		summarizeBy: sum
+		sourceColumn: close
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column volume
+		dataType: double
+		summarizeBy: sum
+		sourceColumn: volume
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition stock_historical_prices = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "stocks_db"),
+				    public_stock_prices = Source{[Schema="public",Item="stock_prices"]}[Data]
+				in
+				    public_stock_prices
+
+	changedProperty = Name
+

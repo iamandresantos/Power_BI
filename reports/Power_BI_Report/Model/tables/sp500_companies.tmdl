@@ -1,0 +1,62 @@
+﻿table sp500_companies
+
+	column ticker
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ticker
+
+		annotation SummarizationSetBy = Automatic
+
+	column company
+		dataType: string
+		summarizeBy: none
+		sourceColumn: company
+
+		annotation SummarizationSetBy = Automatic
+
+	column sector
+		dataType: string
+		summarizeBy: none
+		sourceColumn: sector
+
+		annotation SummarizationSetBy = Automatic
+
+	column industry
+		dataType: string
+		summarizeBy: none
+		sourceColumn: industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column headquarters
+		dataType: string
+		summarizeBy: none
+		sourceColumn: headquarters
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_added
+		dataType: string
+		summarizeBy: none
+		sourceColumn: date_added
+
+		annotation SummarizationSetBy = Automatic
+
+	column founded
+		dataType: string
+		summarizeBy: none
+		sourceColumn: founded
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sp500_companies = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "stocks_db"),
+				    public_sp500_companies = Source{[Schema="public",Item="sp500_companies"]}[Data]
+				in
+				    public_sp500_companies
+
+	changedProperty = Name
+

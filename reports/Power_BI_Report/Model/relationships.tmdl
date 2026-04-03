@@ -1,0 +1,9 @@
+﻿relationship 17e8ac4f-1081-4556-95e3-d4fd362e8088
+	joinOnDateBehavior: datePartOnly
+	fromColumn: stock_historical_prices.date
+	toColumn: LocalDateTable_e711c53e-5a46-4190-aec3-446bd8950a3c.Date
+
+relationship AutoDetected_91cd82b7-8087-430f-b144-24b20f0cc948
+	fromColumn: stock_historical_prices.ticker
+	toColumn: sp500_companies.ticker
+
