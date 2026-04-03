@@ -75,7 +75,7 @@ Power_BI/
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/Power_BI.git
+git clone https://github.com/iamandresantos/Power_BI
 cd Power_BI
 ```
 
