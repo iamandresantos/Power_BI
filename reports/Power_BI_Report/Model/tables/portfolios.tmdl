@@ -1,0 +1,94 @@
+﻿table portfolios
+
+	column portfolio_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: portfolio_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ticker
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ticker
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_buy_price
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: avg_buy_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column current_value
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: current_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column initial_investment
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: initial_investment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column created_at
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: a5c815f5-a246-4bff-b0e0-6bd7a7c7df45
+			defaultHierarchy: LocalDateTable_86dbee56-67db-4d66-8050-7a091d978763.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition portfolios = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "stocks_db"),
+				    public_portfolios = Source{[Schema="public",Item="portfolios"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(public_portfolios,{{"quantity", Int64.Type}, {"avg_buy_price", Currency.Type}, {"current_value", Currency.Type}, {"initial_investment", Currency.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

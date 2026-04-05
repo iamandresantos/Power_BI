@@ -1,0 +1,47 @@
+﻿table risk_profiles
+
+	column risk_profile
+		dataType: string
+		summarizeBy: none
+		sourceColumn: risk_profile
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_stock_weight
+		dataType: double
+		summarizeBy: none
+		sourceColumn: max_stock_weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column allowed_sectors
+		dataType: string
+		summarizeBy: none
+		sourceColumn: allowed_sectors
+
+		annotation SummarizationSetBy = Automatic
+
+	partition risk_profiles = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\andre\Documents\repos\Power_BI\data\raw\clients.xlsx"), null, true),
+				    risk_profiles_Sheet = Source{[Item="risk_profiles",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(risk_profiles_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"risk_profile", type text}, {"description", type text}, {"max_stock_weight", type number}, {"allowed_sectors", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

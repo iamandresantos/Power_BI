@@ -1,0 +1,119 @@
+﻿table transactions
+
+	column transaction_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: transaction_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column portfolio_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: portfolio_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ticker
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ticker
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_type
+		dataType: string
+		summarizeBy: none
+		sourceColumn: transaction_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sell_price
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: sell_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column transaction_value
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: transaction_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column commission_fee
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: commission_fee
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column transaction_date
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: transaction_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column gain_loss
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: gain_loss
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition transactions = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "stocks_db"),
+				    public_transactions = Source{[Schema="public",Item="transactions"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(public_transactions,{{"price", Currency.Type}, {"sell_price", Currency.Type}, {"transaction_value", Currency.Type}, {"commission_fee", Currency.Type}, {"gain_loss", Currency.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

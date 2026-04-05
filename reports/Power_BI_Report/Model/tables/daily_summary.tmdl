@@ -1,0 +1,107 @@
+﻿table daily_summary
+
+	column transaction_date
+		dataType: string
+		summarizeBy: none
+		sourceColumn: transaction_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_transactions
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: total_transactions
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_volume
+		dataType: decimal
+		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		summarizeBy: none
+		sourceColumn: total_volume
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-PT"}
+
+	column total_commissions
+		dataType: decimal
+		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		summarizeBy: none
+		sourceColumn: total_commissions
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-PT"}
+
+	column buy_count
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: buy_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column sell_count
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: sell_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column unique_clients
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: unique_clients
+
+		annotation SummarizationSetBy = Automatic
+
+	column unique_stocks
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: unique_stocks
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_gain_loss
+		dataType: decimal
+		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		summarizeBy: none
+		sourceColumn: total_gain_loss
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-PT"}
+
+	column avg_commission_per_tx
+		dataType: decimal
+		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		summarizeBy: none
+		sourceColumn: avg_commission_per_tx
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-PT"}
+
+	partition daily_summary = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\andre\Documents\repos\Power_BI\data\raw\daily_summary.csv"),[Delimiter=",", Columns=10, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Promoted Headers", {{"total_volume", Currency.Type}, {"total_commissions", Currency.Type}}, "en-US"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Changed Type with Locale",{{"buy_count", Int64.Type}, {"sell_count", Int64.Type}, {"unique_clients", Int64.Type}, {"unique_tickers", Int64.Type}}),
+				    #"Changed Type with Locale1" = Table.TransformColumnTypes(#"Changed Type", {{"total_gain_loss", Currency.Type}, {"avg_commission_per_tx", Currency.Type}}, "en-US"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type with Locale1",{{"total_transactions", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type1",{{"unique_tickers", "unique_stocks"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

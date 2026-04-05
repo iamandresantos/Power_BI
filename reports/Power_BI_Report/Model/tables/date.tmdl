@@ -1,0 +1,103 @@
+﻿table date
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 6b18acd4-9344-4011-aaad-caf05352d20a
+			defaultHierarchy: LocalDateTable_6fb99507-a055-4ee5-83a8-9cc222cb9670.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_num
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: month_num
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: month_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: string
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_num
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: week_num
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: day_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	partition date = m
+		mode: import
+		source =
+				let
+				    StartDate = #date(2020, 1, 1),
+				    EndDate    = Date.From(DateTime.LocalNow()),
+				    Duration   = Duration.Days(EndDate - StartDate) + 1,
+				    DateList   = List.Dates(StartDate, Duration, #duration(1,0,0,0)),
+				    ToTable    = Table.FromList(DateList, Splitter.SplitByNothing()),
+				    Renamed    = Table.RenameColumns(ToTable, {{"Column1", "date"}}),
+				    TypeSet    = Table.TransformColumnTypes(Renamed, {{"date", type date}}),
+				    AddYear    = Table.AddColumn(TypeSet,   "year",        each Date.Year([date]),            Int64.Type),
+				    AddMonth   = Table.AddColumn(AddYear,   "month_num",   each Date.Month([date]),           Int64.Type),
+				    AddMonthNm = Table.AddColumn(AddMonth,  "month_name",  each Date.ToText([date], "MMMM"),  type text),
+				    AddQuarter = Table.AddColumn(AddMonthNm,"quarter",     each "Q" & Text.From(Date.QuarterOfYear([date])), type text),
+				    AddWeek    = Table.AddColumn(AddQuarter,"week_num",    each Date.WeekOfYear([date]),      Int64.Type),
+				    AddDay     = Table.AddColumn(AddWeek,   "day_name",    each Date.ToText([date], "dddd"),  type text),
+				    AddIsWknd  = Table.AddColumn(AddDay,    "is_weekend",  each Date.DayOfWeek([date]) >= 5,  type logical),
+				    AddYearMon = Table.AddColumn(AddIsWknd, "year_month",  each Date.ToText([date], "yyyy-MM"), type text)
+				in
+				    AddYearMon
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

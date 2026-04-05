@@ -1,0 +1,117 @@
+﻿table clients
+
+	column account_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_since
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: client_since
+
+		variation Variation
+			isDefault
+			relationship: c9acf838-7c17-444d-b201-a746d5c891f3
+			defaultHierarchy: LocalDateTable_90f3f774-ea41-4c77-abd7-6eb5fe645f06.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column state
+		dataType: string
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column risk_profile
+		dataType: string
+		summarizeBy: none
+		sourceColumn: risk_profile
+
+		annotation SummarizationSetBy = Automatic
+
+	column manager_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: manager_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column annual_income
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: annual_income
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column account_balance
+		dataType: decimal
+		summarizeBy: sum
+		sourceColumn: account_balance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column managers_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: managers_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition clients = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\andre\Documents\repos\Power_BI\data\raw\clients.xlsx"), null, true),
+				    clients_Sheet = Source{[Item="clients",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(clients_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"account_id", type text}, {"name", type text}, {"email", type text}, {"phone", type text}, {"client_since", type date}, {"state", type text}, {"city", type text}, {"risk_profile", type text}, {"manager_id", type text}, {"annual_income", Currency.Type}, {"account_balance", Currency.Type}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"manager_id"}, managers, {"manager_id"}, "managers", JoinKind.LeftOuter),
+				    #"Expanded managers" = Table.ExpandTableColumn(#"Merged Queries", "managers", {"name"}, {"managers.name"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded managers",{{"managers.name", "managers_name"}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Renamed Columns",{"account_id", "name", "email", "phone", "client_since", "state", "city", "risk_profile", "manager_id", "managers_name", "annual_income", "account_balance"})
+				in
+				    #"Reordered Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

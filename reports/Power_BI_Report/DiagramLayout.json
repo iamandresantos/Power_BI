@@ -5,15 +5,29 @@
       "ordinal": 0,
       "scrollPosition": {
         "x": 0,
-        "y": 0
+        "y": 66
       },
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 0
+            "x": 367.86307027379632,
+            "y": 334.63908216687162
           },
-          "nodeIndex": "sp500_companies",
+          "nodeIndex": "transactions",
+          "nodeLineageTag": "7dc403bf-c740-4071-a50b-833f47213644",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 211
+          },
+          "nodeIndex": "stock_prices",
+          "nodeLineageTag": "b4970bee-e199-4011-9bd9-f777da8c2ba5",
           "size": {
             "height": 248,
             "width": 234
@@ -22,13 +36,92 @@
         },
         {
           "location": {
-            "x": 345,
+            "x": 253,
             "y": 0
           },
-          "nodeIndex": "stock_historical_prices",
+          "nodeIndex": "sp500_companies",
+          "nodeLineageTag": "3f497c05-a269-457b-9ec8-91f9c30d81e5",
           "size": {
             "height": 248,
             "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 552.17599093072988,
+            "y": 0
+          },
+          "nodeIndex": "portfolios",
+          "nodeLineageTag": "acbe34b7-0cb7-4d59-91b2-c4c8dc91f540",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 486.81954108343581
+          },
+          "nodeIndex": "daily_summary",
+          "nodeLineageTag": "475a0d6d-abcb-4310-b92a-8eb3ee505b02",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 856.17599093072977,
+            "y": 0
+          },
+          "nodeIndex": "clients",
+          "nodeLineageTag": "0473431c-c624-412f-befc-18d8511f37a3",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1160.1759909307298,
+            "y": 0
+          },
+          "nodeIndex": "managers",
+          "nodeLineageTag": "ae96bc07-2d16-4b36-8bd1-d8d939b2614c",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1005.1759909307298,
+            "y": 360
+          },
+          "nodeIndex": "risk_profiles",
+          "nodeLineageTag": "5733bb12-428e-4040-ad36-deed7c0aa679",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 675.17599093072977,
+            "y": 398.40977054171788
+          },
+          "nodeIndex": "date",
+          "nodeLineageTag": "7a7e06dc-d2ad-483a-8b3b-aca4fa87cf64",
+          "size": {
+            "height": 296,
+            "width": 411
           },
           "zIndex": 0
         }

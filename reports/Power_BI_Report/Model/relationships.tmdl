@@ -1,9 +1,71 @@
-﻿relationship 17e8ac4f-1081-4556-95e3-d4fd362e8088
+﻿relationship a5c815f5-a246-4bff-b0e0-6bd7a7c7df45
 	joinOnDateBehavior: datePartOnly
-	fromColumn: stock_historical_prices.date
-	toColumn: LocalDateTable_e711c53e-5a46-4190-aec3-446bd8950a3c.Date
+	fromColumn: portfolios.created_at
+	toColumn: LocalDateTable_86dbee56-67db-4d66-8050-7a091d978763.Date
 
-relationship AutoDetected_91cd82b7-8087-430f-b144-24b20f0cc948
-	fromColumn: stock_historical_prices.ticker
+relationship AutoDetected_5b092d18-8b30-40f6-b144-982be0a97af1
+	fromColumn: transactions.portfolio_id
+	toColumn: portfolios.portfolio_id
+
+relationship AutoDetected_01562e23-ef44-41a8-a64d-2a0ab0bd9646
+	fromColumn: portfolios.ticker
 	toColumn: sp500_companies.ticker
+
+relationship AutoDetected_a7d47de8-e79a-42c7-85d6-0fa67738caa0
+	fromColumn: stock_prices.ticker
+	toColumn: sp500_companies.ticker
+
+relationship AutoDetected_d4f2f3a8-2f13-4408-96df-d44946d093f0
+	isActive: false
+	fromColumn: transactions.ticker
+	toColumn: sp500_companies.ticker
+
+relationship AutoDetected_d9c2eb8b-9066-494f-bb33-2c76534702b0
+	fromColumn: portfolios.account_id
+	toColumn: clients.account_id
+
+relationship AutoDetected_ea3ad6e0-c53e-4548-a5f3-1f18f59bf1c8
+	isActive: false
+	fromColumn: transactions.account_id
+	toColumn: clients.account_id
+
+relationship AutoDetected_403dccaa-6fbf-45d9-8581-a9498983deaf
+	fromColumn: clients.risk_profile
+	toColumn: risk_profiles.risk_profile
+
+relationship 6c8878ef-72a6-376f-0022-d4847743568d
+	fromColumn: clients.manager_id
+	toColumn: managers.manager_id
+
+relationship 5af04167-d915-8bdc-f430-66fb58ad8986
+	fromColumn: transactions.transaction_date
+	toColumn: daily_summary.transaction_date
+
+relationship 8afb5141-d5cd-48f9-a514-82163db9f283
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sp500_companies.added_to_sp500
+	toColumn: LocalDateTable_3cbfe9ca-8621-402e-9116-c64acb825834.Date
+
+relationship c9acf838-7c17-444d-b201-a746d5c891f3
+	joinOnDateBehavior: datePartOnly
+	fromColumn: clients.client_since
+	toColumn: LocalDateTable_90f3f774-ea41-4c77-abd7-6eb5fe645f06.Date
+
+relationship 46c8cee7-8a5d-4a49-aa8a-1127140352dc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: managers.hire_date
+	toColumn: LocalDateTable_99713db7-6c09-44c9-b24a-57e9527b8c89.Date
+
+relationship 6b18acd4-9344-4011-aaad-caf05352d20a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: date.date
+	toColumn: LocalDateTable_6fb99507-a055-4ee5-83a8-9cc222cb9670.Date
+
+relationship 51c24fd9-7440-f68e-af9d-94830880c588
+	fromColumn: transactions.transaction_date
+	toColumn: date.date
+
+relationship bbc25913-c6c1-57ac-a3be-6fde22ae3d7d
+	fromColumn: stock_prices.date
+	toColumn: date.date
 

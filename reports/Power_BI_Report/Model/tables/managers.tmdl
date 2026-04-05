@@ -1,0 +1,75 @@
+﻿table managers
+
+	column manager_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: manager_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column hire_date
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: hire_date
+
+		variation Variation
+			isDefault
+			relationship: 46c8cee7-8a5d-4a49-aa8a-1127140352dc
+			defaultHierarchy: LocalDateTable_99713db7-6c09-44c9-b24a-57e9527b8c89.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column years_at_firm
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: years_at_firm
+
+		annotation SummarizationSetBy = Automatic
+
+	partition managers = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\andre\Documents\repos\Power_BI\data\raw\clients.xlsx"), null, true),
+				    managers_Sheet = Source{[Item="managers",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(managers_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"manager_id", type text}, {"name", type text}, {"email", type text}, {"phone", type text}, {"region", type text}, {"hire_date", type date}, {"years_at_firm", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

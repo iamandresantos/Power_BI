@@ -8,12 +8,23 @@
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["sp500_companies","stock_historical_prices"]
+annotation PBI_QueryOrder = ["portfolios","sp500_companies","stock_prices","transactions","daily_summary","clients","managers","risk_profiles","date"]
 
+ref table portfolios
+ref table DateTableTemplate_bc971807-eff3-4e9a-812c-61d81dcf88d0
+ref table LocalDateTable_86dbee56-67db-4d66-8050-7a091d978763
 ref table sp500_companies
-ref table stock_historical_prices
-ref table DateTableTemplate_ebbeafcf-55e8-4a98-92ee-dba9a86af9c7
-ref table LocalDateTable_e711c53e-5a46-4190-aec3-446bd8950a3c
+ref table stock_prices
+ref table transactions
+ref table daily_summary
+ref table clients
+ref table managers
+ref table risk_profiles
+ref table LocalDateTable_3cbfe9ca-8621-402e-9116-c64acb825834
+ref table LocalDateTable_90f3f774-ea41-4c77-abd7-6eb5fe645f06
+ref table LocalDateTable_99713db7-6c09-44c9-b24a-57e9527b8c89
+ref table date
+ref table LocalDateTable_6fb99507-a055-4ee5-83a8-9cc222cb9670
 
 ref cultureInfo en-US
 

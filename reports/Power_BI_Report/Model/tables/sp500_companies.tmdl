@@ -35,28 +35,47 @@
 
 		annotation SummarizationSetBy = Automatic
 
-	column date_added
-		dataType: string
+	column added_to_sp500
+		dataType: dateTime
+		formatString: Long Date
 		summarizeBy: none
-		sourceColumn: date_added
+		sourceColumn: added_to_sp500
+
+		variation Variation
+			isDefault
+			relationship: 8afb5141-d5cd-48f9-a514-82163db9f283
+			defaultHierarchy: LocalDateTable_3cbfe9ca-8621-402e-9116-c64acb825834.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
-	column founded
+		annotation UnderlyingDateTimeDataType = Date
+
+	column founded_in
 		dataType: string
 		summarizeBy: none
-		sourceColumn: founded
+		sourceColumn: founded_in
 
 		annotation SummarizationSetBy = Automatic
 
 	partition sp500_companies = m
 		mode: import
-		source =
+		source = ```
 				let
 				    Source = PostgreSQL.Database("localhost", "stocks_db"),
-				    public_sp500_companies = Source{[Schema="public",Item="sp500_companies"]}[Data]
+				    public_sp500_companies = Source{[Schema="public",Item="sp500_companies"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(public_sp500_companies,{{"date_added", type date}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "founded_in", each if Text.Contains([founded], "(") 
+				then Text.BetweenDelimiters([founded], "(", ")")
+				else [founded]),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"founded_in"}),
+				    #"Extracted First Characters" = Table.TransformColumns(#"Removed Columns", {{"founded", each Text.Start(_, 4), type text}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Extracted First Characters",{"ticker", "company", "sector", "industry", "headquarters", "founded", "date_added"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Reordered Columns",{{"founded", "founded_in"}, {"date_added", "added_to_sp500"}})
 				in
-				    public_sp500_companies
+				    #"Renamed Columns"
+				```
 
-	changedProperty = Name
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 
